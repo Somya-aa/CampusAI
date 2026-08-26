@@ -1,21 +1,37 @@
 import os
+
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from google import genai
 
-# Load environment variables
 load_dotenv()
 
-# Get API key from .env
-api_key = os.getenv("GEMINI_API_KEY")
+app = Flask(__name__)
 
-# Create Gemini client
+api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
 
-# Send a prompt to Gemini
-response = client.models.generate_content(
-    model="gemini-3.5-flash",
-    contents="Introduce yourself as CampusAI, a helpful college assistant for students."
-)
 
-# Print the response
-print(response.text)
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/ask", methods=["POST"])
+def ask():
+    data = request.get_json()
+
+    question = data.get("question")
+
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=question
+    )
+
+    return jsonify({
+        "answer": response.text
+    })
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
