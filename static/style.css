@@ -237,3 +237,55 @@ body {
 .input-area button:hover {
     background: #4f46e5;
 }
+
+/* ---------- CHAT MESSAGES ---------- */
+
+.user-message {
+    max-width: 75%;
+    margin: 15px 0 15px auto;
+    padding: 12px 16px;
+
+    border-radius: 16px 16px 4px 16px;
+
+    background: #6366f1;
+    color: white;
+
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+
+.ai-message {
+    max-width: 75%;
+    margin: 15px auto 15px 0;
+    padding: 14px 18px;
+
+    border-radius: 16px 16px 16px 4px;
+
+    background: #f1f5f9;
+    color: #374151;
+
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+@media (max-width: 600px) {
+
+    .user-message,
+    .ai-message {
+        max-width: 90%;
+    }
+
+    .chat-container {
+        padding: 20px;
+    }
+
+    .input-area {
+        padding: 15px;
+    }
+
+    .input-area button {
+        padding: 14px 18px;
+    }
+
+}
