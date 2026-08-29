@@ -45,7 +45,7 @@
             </div>
 
 
-            <div id="answer" class="answer"></div>
+            <div id="chatMessages"></div>
 
         </main>
 
@@ -68,47 +68,81 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <script>
+<script>
 
-        const questionInput = document.getElementById("question");
-        const askButton = document.getElementById("askButton");
-        const answer = document.getElementById("answer");
-
-
-        askButton.addEventListener("click", async function() {
-
-            const question = questionInput.value;
-
-            if (question.trim() === "") {
-                answer.textContent = "Please enter a question.";
-                return;
-            }
+    const questionInput = document.getElementById("question");
+    const askButton = document.getElementById("askButton");
+    const chatMessages = document.getElementById("chatMessages");
 
 
-            answer.textContent = "Thinking... 🤔";
+    askButton.addEventListener("click", async function() {
+
+        const question = questionInput.value;
 
 
-            const response = await fetch("/ask", {
+        if (question.trim() === "") {
+            return;
+        }
 
-                method: "POST",
+        const userMessage = document.createElement("div");
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+        userMessage.className = "user-message";
 
-                body: JSON.stringify({
-                    question: question
-                })
+        userMessage.textContent = question;
 
-            });
+        chatMessages.appendChild(userMessage);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
 
 
-            const data = await response.json();
+        questionInput.value = "";
 
-            answer.innerHTML = marked.parse(data.answer);
+
+        const aiMessage = document.createElement("div");
+
+        aiMessage.className = "ai-message";
+
+        aiMessage.textContent = "Thinking... 🤔";
+
+        chatMessages.appendChild(aiMessage);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+        const response = await fetch("/ask", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                question: question
+            })
 
         });
-    </script>
+
+
+        const data = await response.json();
+
+
+        aiMessage.innerHTML = marked.parse(data.answer);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+    });
+
+    questionInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        askButton.click();
+    }
+
+});
+
+</script>
 
 
     </body>
