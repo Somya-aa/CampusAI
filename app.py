@@ -16,6 +16,7 @@ client = genai.Client(api_key=api_key)
 def home():
     return render_template("index.html")
 
+conversation = []
 
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -23,10 +24,24 @@ def ask():
 
     question = data.get("question")
 
+    conversation.append({
+    "role": "user",
+    "parts": [
+        {"text": question}
+        ]
+    })
+
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=question
+       model="gemini-3.5-flash",
+       contents=conversation
     )
+
+    conversation.append({
+    "role": "model",
+    "parts": [
+        {"text": response.text}
+        ]
+    })
 
     return jsonify({
         "answer": response.text
