@@ -47,6 +47,15 @@ def ask():
         "answer": response.text
     })
 
+@app.route("/clear", methods=["POST"])
+def clear_chat():
+
+    conversation.clear()
+
+    return jsonify({
+        "message": "Chat cleared"
+    })
+
 
 if __name__ == "__main__":
     app.run(debug=True)
