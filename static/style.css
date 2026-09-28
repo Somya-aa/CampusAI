@@ -325,3 +325,25 @@ body {
         opacity: 1;
     }
 }
+
+/* ---------- CLEAR BUTTON ---------- */
+
+.clear-button {
+    margin-left: 15px;
+
+    padding: 8px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: white;
+    color: #374151;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    background: #f3f4f6;
+}

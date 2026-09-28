@@ -27,6 +27,10 @@
                 <span class="status-dot"></span>
                 Online
             </div>
+
+            <button id="clearButton" class="clear-button">
+                Clear Chat
+            </button>
         </header>
 
 
@@ -74,6 +78,7 @@
     const askButton = document.getElementById("askButton");
     const chatMessages = document.getElementById("chatMessages");
     const chatContainer = document.querySelector(".chat-container");
+    const clearButton = document.getElementById("clearButton");
 
 
     askButton.addEventListener("click", async function() {
@@ -140,6 +145,16 @@
 
 
     });
+
+    clearButton.addEventListener("click", async function() {
+
+    await fetch("/clear", {
+        method: "POST"
+    });
+
+    chatMessages.innerHTML = "";
+
+});
 
     questionInput.addEventListener("keydown", function(event) {
 
