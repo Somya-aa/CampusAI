@@ -121,30 +121,30 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
 
 
-        const response = await fetch("/ask", {
+        try {
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: question
+                })
+            });
 
-            method: "POST",
+            const data = await response.json();
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+            aiMessage.innerHTML = marked.parse(data.answer);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            body: JSON.stringify({
-                question: question
-            })
+        } catch (error) {
+            console.error("Error:", error);
 
-        });
-
-
-        const data = await response.json();
-
-
-        aiMessage.innerHTML = marked.parse(data.answer);
-
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-
-    });
+            aiMessage.innerHTML = "Sorry, something went wrong. Please try again.";
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    
+});
 
     clearButton.addEventListener("click", async function() {
 
